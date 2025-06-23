@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 300px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #333;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        .display {
+            grid-column: span 4;
+            background-color: #1c1c1c;
+            color: #fff;
+            text-align: right;
+            padding: 20px;
+            font-size: 2rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .btn {
+            padding: 20px;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #555;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #777;
+        }
+        .btn.operator {
+            background-color: #007bff;
+        }
+        .btn.operator:hover {
+            background-color: #0056b3;
+        }
+        .btn.equal {
+            grid-column: span 2;
+            background-color: #28a745;
+        }
+        .btn.equal:hover {
+            background-color: #218838;
+        }
+        .btn.clear {
+            background-color: #dc3545;
+        }
+        .btn.clear:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <!-- Display Screen -->
+        <div id="display" class="display">0</div>
+        <!-- Calculator Buttons -->
+        <button class="btn clear" onclick="clearDisplay()">C</button>
+        <button class="btn operator" onclick="appendOperator('/')">/</button>
+        <button class="btn operator" onclick="appendOperator('*')">*</button>
+        <button class="btn operator" onclick="deleteLast()">⌫</button>
+
+        <button class="btn" onclick="appendNumber('7')">7</button>
+        <button class="btn" onclick="appendNumber('8')">8</button>
+        <button class="btn" onclick="appendNumber('9')">9</button>
+        <button class="btn operator" onclick="appendOperator('-')">-</button>
+
+        <button class="btn" onclick="appendNumber('4')">4</button>
+        <button class="btn" onclick="appendNumber('5')">5</button>
+        <button class="btn" onclick="appendNumber('6')">6</button>
+        <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+        <button class="btn" onclick="appendNumber('1')">1</button>
+        <button class="btn" onclick="appendNumber('2')">2</button>
+        <button class="btn" onclick="appendNumber('3')">3</button>
+        <button class="btn equal" onclick="calculate()">=</button>
+
+        <button class="btn" onclick="appendNumber('0')">0</button>
+        <button class="btn" onclick="appendNumber('.')">.</button>
+    </div>
+
+    <script>
+        let displayElement = document.getElementById('display');
+        let currentInput = '';
+
+        // Function to clear the display
+        function clearDisplay() {
+            currentInput = '';
+            displayElement.textContent = '0';
+        }
+
+        // Function to delete the last character
+        function deleteLast() {
+            currentInput = currentInput.slice(0, -1);
+            displayElement.textContent = currentInput || '0';
+        }
+
+        // Function to append numbers to the input
+        function appendNumber(number) {
+            currentInput += number;
+            displayElement.textContent = currentInput;
+        }
+
+        // Function to append operators to the input
+        function appendOperator(operator) {
+            // Prevent appending multiple operators
+            if (currentInput !== '' && !/[+\-*/]$/.test(currentInput)) {
+                currentInput += operator;
+                displayElement.textContent = currentInput;
+            }
+        }
+
+        // Function to perform the calculation
+        function calculate() {
+            try {
+                // Evaluate the expression safely
+                currentInput = eval(currentInput).toString();
+                displayElement.textContent = currentInput;
+            } catch (error) {
+                displayElement.textContent = 'Error';
+                currentInput = '';
+            }
+        }
+    </script>
+</body>
+</html>
